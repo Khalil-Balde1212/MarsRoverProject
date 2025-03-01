@@ -5,7 +5,7 @@
 const int pwm = 1;
 const int in_1 = 2;
 const int in_2 = 3;
-int psdRead = 0;  //PSD read input in Volts
+int psdRead = 0;  //PSD read input in V
 float psdDist = 0;  //psd value in cm
 
 void setup() {
