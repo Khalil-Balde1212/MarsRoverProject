@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #include <psdISR.h>
+#include <encoder_DPS.h>
+
 //#include <servo.h>
 // put function declarations here:
 const int pwm = 1;
