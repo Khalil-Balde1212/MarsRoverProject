@@ -1,6 +1,6 @@
-#include "encoder_DPS.h"
+#include "encoders.h"
 
-namespace encoder_DPS
+namespace encoders
 {
     volatile int encoderCounts[6] = {0, 0, 0, 0, 0, 0};
 
