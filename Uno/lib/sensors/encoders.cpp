@@ -36,33 +36,21 @@ namespace encoders
             int currentStateA = digitalRead(encoderPinIndex[pinAIndex]);
             int currentStateB = digitalRead(encoderPinIndex[pinBIndex]);
 
-            if (lastStateA == LOW && lastStateB == LOW)
-            {
-                if (currentStateA == HIGH && currentStateB == LOW)
-                    return true;
-                if (currentStateA == LOW && currentStateB == HIGH)
-                    return false;
+            if (lastStateA == LOW && lastStateB == LOW){
+                if (currentStateA == HIGH && currentStateB == LOW) return true;
+                if (currentStateA == LOW && currentStateB == HIGH) return false;
             }
-            else if (lastStateA == HIGH && lastStateB == LOW)
-            {
-                if (currentStateA == HIGH && currentStateB == HIGH)
-                    return true;
-                if (currentStateA == LOW && currentStateB == LOW)
-                    return false;
+            else if (lastStateA == HIGH && lastStateB == LOW){
+                if (currentStateA == HIGH && currentStateB == HIGH) return true;
+                if (currentStateA == LOW && currentStateB == LOW) return false;
             }
-            else if (lastStateA == HIGH && lastStateB == HIGH)
-            {
-                if (currentStateA == LOW && currentStateB == HIGH)
-                    return true;
-                if (currentStateA == HIGH && currentStateB == LOW)
-                    return false;
+            else if (lastStateA == HIGH && lastStateB == HIGH){
+                if (currentStateA == LOW && currentStateB == HIGH) return true;
+                if (currentStateA == HIGH && currentStateB == LOW) return false;
             }
-            else if (lastStateA == LOW && lastStateB == HIGH)
-            {
-                if (currentStateA == LOW && currentStateB == LOW)
-                    return true;
-                if (currentStateA == HIGH && currentStateB == HIGH)
-                    return false;
+            else if (lastStateA == LOW && lastStateB == HIGH){
+                if (currentStateA == LOW && currentStateB == LOW) return true;
+                if (currentStateA == HIGH && currentStateB == HIGH) return false;
             }
 
             return false;

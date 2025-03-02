@@ -8,4 +8,5 @@ void setup() {
 }
 
 void loop() {
+  encoders::encoderCounts[0];
 }
