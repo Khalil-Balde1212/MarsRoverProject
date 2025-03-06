@@ -1,4 +1,8 @@
 #include <Arduino.h>
+#include <Adafruit_PWMServoDriver.h>
+
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
 
 // put function declarations here:
 int myFunction(int, int);
