@@ -7,10 +7,10 @@
 #define FL_MOTORB 6
 
 //TODO define the rest
-#define CL_MOTORA -1
-#define CL_MOTORB -1
-#define BL_MOTORA -1
-#define BL_MOTORB -1
+#define CL_MOTORA 7
+#define CL_MOTORB 8
+#define BL_MOTORA 9
+#define BL_MOTORB 10
 
 #define FR_MOTORA -1
 #define FR_MOTORB -1
