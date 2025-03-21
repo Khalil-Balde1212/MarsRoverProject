@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Adafruit_PWMServoDriver.h>
+#include <psdISR.h>
 
 #include "robot_const.h"
 
@@ -13,6 +14,9 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40);
 
 uint8_t servonum = 0; //sets the PCA9685 channel for servo control
 
+const byte interruptPin = 3;  //PSD interrupt pin
+volatile byte state = HIGH; //sets interrupt to HIGH intially
+
 void setup() {
   Serial.begin(9600);
   pwm.begin();
@@ -21,14 +25,26 @@ void setup() {
   pwm.setOscillatorFrequency(27000000); //shouldn't change anything as 27Mhz should be the original setting
   Serial.println("init PWM Servo Driver");
 
+  pinMode(interruptPin, INPUT);
+  //interrupt for PSD distance sensor at 10cm using 9.1k and 1k resistors for R2 and R1 respectively
+  attachInterrupt(digitalPinToInterrupt(interruptPin), psdInterrupt, FALLING);
+
 
   Wire.setClock(400000); // 400kHz I2C clock
   Wire.begin();
 
+  float photoSens = 0.0;
 
 }
 
 void loop() {
+  //turn off motors when it is dark
+  while(photoSens != 0) { //replace with appropriate while condition
+    //set motors to zero
+  }
+
+  //current checker, where is it going?
+
   //code to just turn the servo 
   Serial.println(servonum);
   pwm.writeMicroseconds(servonum, 500);
