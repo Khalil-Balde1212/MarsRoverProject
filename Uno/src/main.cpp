@@ -155,7 +155,7 @@ float readCurrent(){
 
 void readPhoto() {
   int  value = analogRead(photoPin);
-  if (value > 30)
+  if (value > 30) {
     stopm();
   }
 }
