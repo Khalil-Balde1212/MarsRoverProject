@@ -16,6 +16,7 @@ const int MRF = 11;
 const int MRR = 10;
 const int motorSpeed = 4095;
 
+float yt = 0;
 float y = 0;
 //psd
 const byte interruptPin = 3;  //PSD interrupt pin
@@ -144,15 +145,16 @@ float readCurrent(){
   float voltage = currentSensorValue * (Vreference/1023.0); // Convert analog value to voltage
   voltage -= 2.5;
   float current = voltage/volts_per_amp;
+  current = current * 1000;
   //Serial.print("The Current draw on the motor is: ");
   //Serial.println(current);
   //return current;
-  float a = 0.1;
+  float a = 0.05;
   float x = current;
-  float yt = y+a*(x-y);
-  float y = yt;
-  Serial.println(y);
-  return y;
+  yt = y+a*(x-y);
+  y = yt;
+  Serial.println(yt);
+  return yt;
 }
 
 void readPhoto() {
