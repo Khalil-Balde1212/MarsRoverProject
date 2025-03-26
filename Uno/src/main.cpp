@@ -1,20 +1,6 @@
 #include <Adafruit_PWMServoDriver.h>
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
-//motor pins front/back/middle, left/right and forward/back
-const int FLF = 8;
-const int FLR = 9;
-const int FRF = 7;
-const int FRR = 6;
-const int BLF = 12;
-const int BLR = 13;
-const int BRF = 5;
-const int BRR = 4;
-const int MLF = 14;
-const int MLR = 15;
-const int MRF = 11;
-const int MRR = 10;
-const int motorSpeed = 4095;
 
 //psd
 const byte interruptPin = 3;  //PSD interrupt pin
