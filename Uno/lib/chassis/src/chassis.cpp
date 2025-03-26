@@ -3,7 +3,7 @@
 #include "robot_const.h"
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-
+double mappedSpeed = 0;
 void initChassis()
 {
     pwm.begin();
@@ -19,51 +19,53 @@ void initChassis()
     }
 }
 
-setSpeed(int forward, int reverse, double speed)
+void setSpeed(int forward, int reverse, double speed)
 {
     if (speed > 0)
     { //forward
-        pwm.setPWM(forward, 0, speed);
+        mappedSpeed = speed * 4095;
+        pwm.setPWM(forward, 0, mappedSpeed);
         pwm.setPWM(reverse, 0, 0);
     }
     else
     {//reverse or coast
+        mappedSpeed = -speed * 4095;
         pwm.setPWM(forward, 0, 0);
-        pwm.setPWM(reverse, 0, speed);
+        pwm.setPWM(reverse, 0, mappedSpeed);
     }
 }
 
-setSpeedFL(double speed)
+void setSpeedFL(double speed)
 {
     setSpeed(FL_MOTORA, FL_MOTORB, speed);
 }
 
-setSpeedCL(double speed)
+void setSpeedCL(double speed)
 {
     setSpeed(CL_MOTORA, CL_MOTORB, speed);
 }
 
-setSpeedBL(double speed)
+void setSpeedBL(double speed)
 {
     setSpeed(BL_MOTORA, BL_MOTORB, speed);
 }
 
-setSpeedFR(double speed)
+void setSpeedFR(double speed)
 {
     setSpeed(FR_MOTORA, FR_MOTORB, speed);
 }
 
-setSpeedCR(double speed)
+void setSpeedCR(double speed)
 {
     setSpeed(CR_MOTORA, CR_MOTORB, speed);
 }
 
-setSpeedBR(double speed)
+void setSpeedBR(double speed)
 {
     setSpeed(BR_MOTORA, BR_MOTORB, speed);
 }
 
-setDifferentialSpeeds(double leftSpeed, double rightSpeed)
+void setDifferentialSpeeds(double leftSpeed, double rightSpeed)
 {
     setSpeedFL(leftSpeed);
     setSpeedCL(leftSpeed);

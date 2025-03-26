@@ -1,6 +1,7 @@
 #ifndef CHASSIS_H
 #define CHASSIS_H
 
+void initChassis();
 void setSpeed(int forward, int reverse, double speed);
 
 void setSpeedFL(double speed);
