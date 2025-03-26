@@ -4,6 +4,21 @@
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
+void initChassis()
+{
+    pwm.begin();
+    pwm.setPWMFreq(50); //TODO check for better frequencies
+    //believe 50 is the standard
+    pwm.setOscillatorFrequency(27000000); //shouldn't change anything as 27Mhz should be the original setting
+    Serial.println("init PWM Servo Driver");
+
+    for (int i = 0; i < 16; i++)
+    {
+        Serial.println(i);
+        pwm.setPWM(i, 0, 0);
+    }
+}
+
 setSpeed(int forward, int reverse, double speed)
 {
     if (speed > 0)
