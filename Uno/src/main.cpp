@@ -16,14 +16,15 @@ const int MRF = 11;
 const int MRR = 10;
 const int motorSpeed = 4095;
 
+float y = 0;
 //psd
 const byte interruptPin = 3;  //PSD interrupt pin
 volatile byte state = HIGH; //sets interrupt to HIGH intially
+volatile bool psdTriggered = false;
 //current
 const byte currentPin = A1; //current sensor input pin
 const float Vreference = 5.0; //arduino internal reference voltage
 const float volts_per_amp = 0.2f;
-const float offsetV = 0;  //offset voltage
 const float sensitivity = 0.185;  //current sensor sensitivity
 float currentSensorValue = 0; //reads the value from the current sensor
 //photo
@@ -39,7 +40,7 @@ int autom = 5;
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("setup");
+  //Serial.println("setup");
   pinMode(interruptPin, INPUT);
   pinMode(currentPin, INPUT);
   pinMode(photoPin, INPUT);
@@ -49,24 +50,21 @@ void setup() {
   pwm.setPWMFreq(50); //TODO check for better frequencies
   //believe 50 is the standard
   pwm.setOscillatorFrequency(27000000); //shouldn't change anything as 27Mhz should be the original setting 
-  Serial.println("init PWM Servo Driver");
 
   for (int i=0; i < 16; i++) {
     //pinMode(i, 0);
-    Serial.println(i);
+    //Serial.println(i);
     pwm.setPWM(i, 0, 0);
   }
+  //Serial.println("pins reset");
   attachInterrupt(digitalPinToInterrupt(interruptPin), psdInterrupt, FALLING);
 }
 
 void psdInterrupt() {
-  stopm();
-  Serial.println("interrupted");
-  volatile byte state = HIGH;
+  psdTriggered = true;
 }
 
 void forward() {
-  Serial.println("forward");
   pwm.setPWM(FLF, 0, motorSpeed);
   pwm.setPWM(FLR, 0, 0);
   pwm.setPWM(FRF, 0, motorSpeed);
@@ -82,7 +80,6 @@ void forward() {
 }
 
 void reverse() {
-  Serial.println("reverse");
   pwm.setPWM(FLF, 0, 0);
   pwm.setPWM(FLR, 0, motorSpeed);
   pwm.setPWM(FRF, 0, 0);
@@ -98,7 +95,6 @@ void reverse() {
 }
 
 void leftm() {
-  Serial.println("left");
   pwm.setPWM(FLF, 0, 0);
   pwm.setPWM(FLR, 0, motorSpeed);
   pwm.setPWM(FRF, 0, motorSpeed);
@@ -114,7 +110,6 @@ void leftm() {
 }
 
 void rightm(){
-  Serial.println("right");
   pwm.setPWM(FLF, 0, motorSpeed);
   pwm.setPWM(FLR, 0, 0);
   pwm.setPWM(FRF, 0, 0);
@@ -130,7 +125,6 @@ void rightm(){
 }
 
 void stopm() {
-  Serial.println("stop");
   pwm.setPWM(FLF, 0, motorSpeed);
   pwm.setPWM(FLR, 0, motorSpeed);
   pwm.setPWM(FRF, 0, motorSpeed);
@@ -150,22 +144,44 @@ float readCurrent(){
   float voltage = currentSensorValue * (Vreference/1023.0); // Convert analog value to voltage
   voltage -= 2.5;
   float current = voltage/volts_per_amp;
-  return current;
+  //Serial.print("The Current draw on the motor is: ");
+  //Serial.println(current);
+  //return current;
+  float a = 0.1;
+  float x = current;
+  float yt = y+a*(x-y);
+  float y = yt;
+  Serial.println(y);
+  return y;
 }
 
 void readPhoto() {
   int  value = analogRead(photoPin);
-  if (value > 30) {
+  while (value < 30){
     stopm();
+    value = analogRead(photoPin);
+    //Serial.println(value);
+    if (value > 30) {
+      break;
+    }
   }
 }
 
 void loop() {
   readPhoto();
-  //readCurrent();
-  //Serial.println("The Current draw on the motor is: "
-  //Serial.print(current);
+  
+  while (psdTriggered) {
+    stopm();
+    for (int i=0;i<15;i++) {
+        reverse();
+    }
+    psdTriggered = false;
+    attachInterrupt(digitalPinToInterrupt(interruptPin), psdInterrupt, FALLING);
+    }
 
+  
+  //volatile byte state = HIGH;
+  
   int Xm = analogRead(A2);
   int Ym = analogRead(A3);
 
@@ -206,8 +222,5 @@ void loop() {
   else {
     stopm();
   }
-
-  //Serial.println(p1);
-  //Serial.println(p2);
-  
+  readCurrent();  
 }
